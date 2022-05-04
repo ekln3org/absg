@@ -63,14 +63,39 @@ class _LogListViewState extends State<LogListView> {
 
     print("return Container");
     return Container(
-        height: 70,
-        child: Card(
-          child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: entities.length == 0
+      height: 70,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              entities.length == 0
                   ? const Text("There is no records yet.")
-                  : Text(filename)),
-        ));
+                  : Text(filename),
+              Container(
+                child: Row(
+                  children: [
+                    TextButton(
+                      onPressed: () {},
+                      child: const Icon(Icons.drive_file_rename_outline),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Icon(Icons.open_in_browser),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Icon(Icons.share),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void RefreshList() async {
