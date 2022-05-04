@@ -79,6 +79,7 @@ class _AbsgRecorderState extends State<AbsgRecorder> {
     }
 
     _recording = !_recording;
+    setState(() {});
   }
 
   void _outportCSV() {
@@ -146,14 +147,19 @@ class _AbsgRecorderState extends State<AbsgRecorder> {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      const SizedBox(
-        width: 10,
-      ),
       OutlinedButton(
-          onPressed: () {
-            _toggleRecord();
-          },
-          child: const Text("Record")),
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+                _recording ? Colors.red : Colors.white)),
+        onPressed: () {
+          _toggleRecord();
+        },
+        child: Container(
+            child: Text(
+          _recording ? "Recording..." : "Record",
+          style: TextStyle(color: _recording ? Colors.white : Colors.blue),
+        )),
+      ),
       const SizedBox(
         width: 10,
       ),
