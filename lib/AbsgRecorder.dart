@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import "dart:async";
@@ -5,7 +6,7 @@ import 'dart:math';
 
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+import 'package:sprintf/sprintf.dart';
 
 //Read and write files
 //https://docs.flutter.dev/cookbook/persistence/reading-writing-files
@@ -37,9 +38,9 @@ class CounterStorage {
     }
   }
 
-  Future<File> writeCounter(String str) async {
-    final file = await _localFile;
-
+  Future<File> writeStr(String filename, String str) async {
+    final path = await _localPath;
+    final file = File("$path/$filename");
     // Write the file
     return file.writeAsString(str);
   }
@@ -100,7 +101,18 @@ class _AbsgRecorderState extends State<AbsgRecorder> {
     print(time.length);
 
     final directory = getApplicationDocumentsDirectory();
-    widget.storage.writeCounter(outputString);
+    final now = DateTime.now();
+    final suffix = ".csv";
+    final filename = sprintf("data_%d%d%d%d%d%d%s", [
+      now.year,
+      now.month,
+      now.day,
+      now.hour,
+      now.minute,
+      now.second,
+      suffix
+    ]);
+    widget.storage.writeStr(filename, outputString);
   }
 
   double _g = 9.8;
