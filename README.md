@@ -1,5 +1,7 @@
 # absg
 
+<img src="IMG_6870.jpg" style="width: 300px">
+
 A new Flutter project.
 
 ## Getting Started

@@ -1,10 +1,12 @@
-import 'package:absg/AbsgChart.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import "dart:async";
 import 'dart:math';
 
 import 'package:sensors_plus/sensors_plus.dart';
+
+import 'package:absg/AbsgChart.dart';
+import 'package:absg/AbsgRecorder.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +36,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _displayIndex = 0;
 
-  List<Widget> _pages = [
+  List<Widget> _NavigationPages = [
     MyAbsgCharts(),
     CustomPage(),
     CustomPage(),
@@ -46,6 +48,12 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  void _outportCSV({Key? key}) {
+    print("pushed outport CSV button");
+  }
+
+  void _toggleRecord() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +63,17 @@ class _MainPageState extends State<MainPage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(0.0),
-          child: _pages[_displayIndex],
+          child: Column(children: [
+            SizedBox(
+              height: 60,
+              child: AbsgRecorder(
+                storage: CounterStorage(),
+              ),
+            ),
+            Expanded(
+              child: _NavigationPages[_displayIndex],
+            ),
+          ]),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -66,7 +84,7 @@ class _MainPageState extends State<MainPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.border_all),
-            label: 'Log',
+            label: 'Records',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
