@@ -50,10 +50,6 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  void _outportCSV({Key? key}) {
-    print("pushed outport CSV button");
-  }
-
   void _toggleRecord() {}
 
   @override

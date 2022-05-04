@@ -365,9 +365,12 @@ class _MyAbsgChartState3 extends State<MyAbsgChart3> {
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
         child: Align(
           alignment: Alignment.topLeft,
-          child: SizedBox(
-              child: Text(
-                  "sqrt(gx^2 + gy^2) = " + roundAt(_absg, 100).toString())),
+          child: Visibility(
+            visible: false,
+            child: SizedBox(
+                child: Text(
+                    "sqrt(gx^2 + gy^2) = " + roundAt(_absg, 100).toString())),
+          ),
         ),
       ),
       SizedBox(

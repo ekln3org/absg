@@ -68,30 +68,44 @@ class _AbsgRecorderState extends State<AbsgRecorder> {
       time = [];
       data = [];
       timer = Timer.periodic(const Duration(milliseconds: 10), ((timer) {
-        time.add(_clock.toDouble() / 100);
-        var tmp = [_absg, _ax, _ay, _az];
+        double time_ = _clock.toDouble() / 100;
+        time.add(time_);
+        var tmp = [time_, _absg, _gx, _gy, _gz];
         data.add(tmp);
         _clock++;
       }));
     } else {
       print("stop recording");
       timer.cancel();
+
+      _outputCSV();
     }
 
     _recording = !_recording;
     setState(() {});
   }
 
-  void _outportCSV() {
+  void _outputCSV() {
     print("outputCSV");
 
+    if (data.isEmpty) {
+      print("data is empty. return");
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Please record first.')));
+
+      return;
+    }
+
     String outputString = "";
+
+    outputString += "time,absg,gx,gy,gz\n";
 
     for (var ar in data) {
       var col = 0;
       for (var val in ar) {
         outputString += val.toString();
-        if (col != 0 && col != ar.length - 1) {
+        if (col != ar.length - 1) {
           outputString += ",";
         }
         col++;
@@ -104,16 +118,18 @@ class _AbsgRecorderState extends State<AbsgRecorder> {
     final directory = getApplicationDocumentsDirectory();
     final now = DateTime.now();
     final suffix = ".csv";
-    final filename = sprintf("data_%d%d%d%d%d%d%s", [
+    final filename = sprintf("data_%s%s%s%s%s%s%s", [
       now.year,
-      now.month,
-      now.day,
-      now.hour,
-      now.minute,
-      now.second,
+      now.month.toString().padLeft(2, "0"),
+      now.day.toString().padLeft(2, "0"),
+      now.hour.toString().padLeft(2, "0"),
+      now.minute.toString().padLeft(2, "0"),
+      now.second.toString().padLeft(2, "0"),
       suffix
     ]);
     widget.storage.writeStr(filename, outputString);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: Duration(milliseconds: 800), content: Text('$filename')));
   }
 
   double _g = 9.8;
@@ -146,28 +162,24 @@ class _AbsgRecorderState extends State<AbsgRecorder> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
-      OutlinedButton(
+    return SizedBox(
+      height: 10,
+      width: double.infinity,
+      child: OutlinedButton(
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(
                 _recording ? Colors.red : Colors.white)),
         onPressed: () {
           _toggleRecord();
         },
-        child: Container(
-            child: Text(
-          _recording ? "Recording..." : "Record",
-          style: TextStyle(color: _recording ? Colors.white : Colors.blue),
-        )),
+        child: Text(
+          _recording
+              ? "Recording... Tap here to stop recording."
+              : "Start new record",
+          style: TextStyle(color: _recording ? Colors.white : Colors.red),
+          textAlign: TextAlign.center,
+        ),
       ),
-      const SizedBox(
-        width: 10,
-      ),
-      OutlinedButton(
-          onPressed: () {
-            _outportCSV();
-          },
-          child: const Text("Output CSV"))
-    ]);
+    );
   }
 }

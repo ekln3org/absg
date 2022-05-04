@@ -6,6 +6,30 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shake/shake.dart';
 import 'package:open_file/open_file.dart';
 
+class AlertDialogSample extends StatelessWidget {
+  const AlertDialogSample({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('データを消してしまってもいいですか？'),
+      content: Text('こうかいしませんね？'),
+      actions: <Widget>[
+        GestureDetector(
+          child: Text('いいえ'),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+        GestureDetector(
+          child: Text('はい'),
+          onTap: () {},
+        )
+      ],
+    );
+  }
+}
+
 class LogListView extends StatefulWidget {
   const LogListView({Key? key}) : super(key: key);
 
@@ -59,11 +83,27 @@ class _LogListViewState extends State<LogListView> {
   void initState() {
     RefreshList();
 
-    ShakeDetector detector = ShakeDetector.autoStart(onPhoneShake: () {
-      // Do stuff on phone shake
+    final detector2 = ShakeDetector.autoStart(onPhoneShake: () {});
+
+    final detector = ShakeDetector.autoStart(onPhoneShake: () async {
       print("shake");
+      if (!this.mounted) return;
+      // Do stuff on phone shake
+      if (entities.isEmpty) return;
+
+      for (var entity in entities) {
+        print("Deleting $entity");
+        await _deleteFile(Path.basename(entity.path));
+      }
+
+      await RefreshList();
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   void _onPressed() {
@@ -76,7 +116,7 @@ class _LogListViewState extends State<LogListView> {
     Widget viewitem;
     print("entities.length:" + (entities.length).toString());
     if (entities.length != 0) {
-      entity = entities[index];
+      entity = entities[entities.length - 1 - index];
       filename = Path.basename(entity.path);
       print("filname:" + filename);
 
