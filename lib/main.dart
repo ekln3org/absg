@@ -6,7 +6,7 @@ import 'dart:math';
 import 'package:sensors_plus/sensors_plus.dart';
 
 import 'package:absg/AbsgChart.dart';
-import 'package:absg/AbsgRecorder.dart';
+import 'package:absg/LogListView.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,8 +37,10 @@ class _MainPageState extends State<MainPage> {
   int _displayIndex = 0;
 
   List<Widget> _NavigationPages = [
-    MyAbsgCharts(),
-    CustomPage(),
+    MyAbsgCharts(
+      sensorData: SensorData(),
+    ),
+    LogListView(),
     CustomPage(),
   ];
 
@@ -61,21 +63,10 @@ class _MainPageState extends State<MainPage> {
         title: const Text('absg'),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: Column(children: [
-            SizedBox(
-              height: 60,
-              child: AbsgRecorder(
-                storage: CounterStorage(),
-              ),
-            ),
-            Expanded(
-              child: _NavigationPages[_displayIndex],
-            ),
-          ]),
-        ),
-      ),
+          child: Padding(
+        padding: const EdgeInsets.all(0.0),
+        child: _NavigationPages[_displayIndex],
+      )),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
