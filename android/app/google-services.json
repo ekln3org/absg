@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "829049383042",
+    "project_id": "absg-7cd77",
+    "storage_bucket": "absg-7cd77.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829049383042:android:247569e0b053363684ec9b",
+        "android_client_info": {
+          "package_name": "com.hiroapps.absg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829049383042-l7tu5gh14ea7eqs41itkbjara8r3g65v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1EHIe10lq_Qx3R9WuM3jlOiSA-3tTiQA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "829049383042-l7tu5gh14ea7eqs41itkbjara8r3g65v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
